@@ -45,13 +45,10 @@ def test_node_should_contain_question():
     node = Node(training_data)
     assert node.question != None
 
-# Use multiple test cases
 def test_node_should_partition_data_set_by_question():
     node = Node(training_data)
-    question = Question('Colour', 'Green')
-    true_rows, false_rows = node.partition(training_data, question)
-    assert true_rows.equals(training_data.loc[training_data['Colour'] == 'Green'])
-    assert false_rows.equals(training_data.drop([0]))
+    assert node.true_branch.equals(training_data.loc[training_data['Colour'] == 'Green'])
+    assert node.false_branch.equals(training_data.drop([0]))
 
 # Question class
 def test_node_question_should_contain_a_column_and_value():

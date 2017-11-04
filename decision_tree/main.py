@@ -19,6 +19,7 @@ class Node(object):
 
     def __init__(self, data):
         self.question = Question(data.columns[0], data['Colour'][0])
+        self.true_branch, self.false_branch = self.partition(data, self.question)
 
     def partition(self, data, question):
         true_rows, false_rows = [], []
