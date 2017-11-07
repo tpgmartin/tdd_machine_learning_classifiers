@@ -1,38 +1,41 @@
+import pytest
 from main import KNN
 
 X_train = [
-    [4.6,  3.1,  1.5,  0.2],
-    [5.9,  3.0,   5.1,  1.8],
+    [0, 0, 0, 0],
+    [1, 1, 1, 1],
+    [1, 1, 1, 1],
+    [2, 2, 2, 2],
+    [2, 2, 2, 2],
+    [2, 2, 2, 2],
+    [2, 2, 2, 2]
 ]
-y_train = [0, 2]
-
-X_test = [[5.8,  2.8,  5.1,  2.4]]
-y_test = [2]
+y_train = [0, 1, 1, 2, 2, 2, 2]
 
 
-def setup():
-    clf = KNN()
+@pytest.mark.parametrize(('n_neighbors'),[1,3,5])
+def test_KNN_should_be_initialised_with_n_neighbors(n_neighbors):
+    clf = KNN(n_neighbors)
 
     clf.fit(X_train, y_train)
 
-    return clf
+    assert clf.n_neighbors == n_neighbors
 
+@pytest.mark.parametrize(('n_neighbors'),[1,3,5])
+def test_should_be_able_to_pass_training_data_to_classifier(n_neighbors):
+    clf = KNN(n_neighbors)
 
-def test_KNN_should_be_initialised_with_n_neighbors():
-    clf = setup()
-
-    assert clf.n_neighbors == 1
-
-
-def test_should_be_able_to_pass_training_data_to_classifier():
-    clf = setup()
+    clf.fit(X_train, y_train)
 
     assert clf.X_train == X_train
     assert clf.y_train == y_train
 
+X_test = [[0, 0, 0, 0]]
+@pytest.mark.parametrize(('n_neighbors', 'y_test'),[(1, [0]),(3, [1]), (7, [2])])
+def test_predict_should_return_label_for_test_data(n_neighbors, y_test):
+    clf = KNN(n_neighbors)
 
-def test_predict_should_return_label_for_test_data():
-    clf = setup()
+    clf.fit(X_train, y_train)
 
     predictions = clf.predict(X_test)
 
